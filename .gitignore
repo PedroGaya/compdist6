@@ -1,3 +1,5 @@
 loadtest/results
 node/node_modules
 data/
+python/*/__pycache__
+python/.venv

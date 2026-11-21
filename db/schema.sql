@@ -1,0 +1,21 @@
+CREATE TABLE users (
+  id   INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  age  INTEGER NOT NULL
+);
+CREATE TABLE songs (
+  id     INTEGER PRIMARY KEY AUTOINCREMENT,
+  name   TEXT NOT NULL,
+  artist TEXT NOT NULL
+);
+CREATE TABLE playlists (
+  id      INTEGER PRIMARY KEY AUTOINCREMENT,
+  name    TEXT NOT NULL,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
+);
+CREATE TABLE playlist_songs (
+  playlist_id INTEGER NOT NULL REFERENCES playlists(id) ON DELETE CASCADE,
+  song_id     INTEGER NOT NULL REFERENCES songs(id) ON DELETE CASCADE,
+  PRIMARY KEY (playlist_id, song_id)
+) WITHOUT ROWID;
+CREATE INDEX idx_playlists_user ON playlists(user_id);

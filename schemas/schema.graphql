@@ -1,0 +1,42 @@
+type User {
+  id: Int!
+  name: String!
+  age: Int!
+}
+type Song {
+  id: Int!
+  name: String!
+  artist: String!
+}
+type Playlist {
+  id: Int!
+  name: String!
+  userId: Int!
+}
+
+type Query {
+  user(id: Int!): User!
+  users(limit: Int = 50, offset: Int = 0): [User!]!
+  song(id: Int!): Song!
+  songs(limit: Int = 50, offset: Int = 0): [Song!]!
+  playlist(id: Int!): Playlist!
+  playlists(userId: Int!, limit: Int = 50, offset: Int = 0): [Playlist!]!
+  playlistSongs(playlistId: Int!, limit: Int = 50, offset: Int = 0): [Song!]!
+}
+
+type Mutation {
+  createUser(name: String!, age: Int!): User!
+  updateUser(id: Int!, name: String!, age: Int!): User!
+  deleteUser(id: Int!): Boolean!
+
+  createSong(name: String!, artist: String!): Song!
+  updateSong(id: Int!, name: String!, artist: String!): Song!
+  deleteSong(id: Int!): Boolean!
+
+  createPlaylist(userId: Int!, name: String!): Playlist!
+  updatePlaylist(id: Int!, name: String!): Playlist!
+  deletePlaylist(id: Int!): Boolean!
+
+  addSong(playlistId: Int!, songId: Int!): Boolean!
+  removeSong(playlistId: Int!, songId: Int!): Boolean!
+}

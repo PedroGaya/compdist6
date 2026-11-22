@@ -1,0 +1,3 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:s="streaming.soap">
+  <soapenv:Body><s:GetUser><s:id>999999</s:id></s:GetUser></soapenv:Body>
+</soapenv:Envelope>

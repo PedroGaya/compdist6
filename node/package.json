@@ -11,6 +11,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "graphql": "^17.1.0",
     "soap": "^1.14.1"
   }
 }

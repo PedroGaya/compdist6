@@ -5,12 +5,15 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/node": "^26.6.6"
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.14.7",
+    "@grpc/proto-loader": "^0.8.1",
     "graphql": "^17.1.0",
     "soap": "^1.14.1"
   }

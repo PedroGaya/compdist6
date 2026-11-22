@@ -7,6 +7,10 @@ from spyne.server.wsgi import WsgiApplication
 
 from common import repo
 
+import logging
+logging.getLogger("waitress").setLevel(logging.ERROR)
+logging.getLogger("waitress.queue").setLevel(logging.ERROR)
+
 NS = "streaming.soap"
 
 

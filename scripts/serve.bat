@@ -15,10 +15,14 @@ if /i "%2"=="pbuf" (
 ) else if /i "%2"=="soap" (
   uv run --project python --directory python waitress-serve --port=%PORT% --threads=16 soap.main:app
 ) else (
-  uv run --project python --directory python uvicorn %2.main:app --port %PORT%
+  uv run --project python --directory python uvicorn %2.main:app --port %PORT% --no-access-log --log-level warning
 )
 exit /b
 
 :bun
-bun run node/%2/index.ts
+if /i "%2"=="pbuf" (
+  cd node && npx tsx pbuf/index.ts
+) else (
+  bun run node/%2/index.ts
+)
 exit /b

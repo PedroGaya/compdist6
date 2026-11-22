@@ -1,5 +1,4 @@
 from soap import compat  # noqa: F401
-from a2wsgi import WSGIMiddleware
 from spyne import Application, ServiceBase, rpc, Fault
 from spyne.model.complex import ComplexModel, Array
 from spyne.model.primitive import Integer32, Unicode
@@ -128,4 +127,4 @@ soap_app = Application(
     out_protocol=Soap11(),
 )
 
-app = WSGIMiddleware(WsgiApplication(soap_app)) # type: ignore
+app = WsgiApplication(soap_app) # type: ignore

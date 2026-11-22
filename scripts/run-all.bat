@@ -4,6 +4,7 @@ setlocal
 cd /d "%~dp0.."
 set DUR=%1
 if "%DUR%"=="" set DUR=60s
+for /f %%T in ('powershell -nologo -command "Get-Date -Format yyyyMMdd-HHmm"') do set STAMP=%%T
 
 for %%U in (50 200 500) do (
   for %%R in (py bun) do (
@@ -11,30 +12,31 @@ for %%U in (50 200 500) do (
   )
 )
 echo.
-echo All done.
+echo All done. Next: uv run --project python python scripts\report.py
 exit /b
 
 :run
 set RT=%1
 set SVC=%2
 set U=%3
-if exist "loadtest\results\%RT%_%SVC%_u%U%_stats.csv" (echo skip %RT% %SVC% u%U% & exit /b)
+set OUT=results\%STAMP%_%RT%_%SVC%_u%U%_t%DUR%
 call "%~dp0_env.bat" %RT% %SVC%
 set /a RATE=U/10
 if %RATE% lss 1 set RATE=1
 echo === %RT% %SVC% users=%U% port=%PORT%
 call :kill
 call "%~dp0reset-db.bat"
-start "bench-server" /min cmd /c ""%~dp0serve.bat" %RT% %SVC% > "loadtest\results\%RT%_%SVC%_u%U%_server.log" 2>&1"
+mkdir "%OUT%" 2>nul
+start "bench-server" /min cmd /c ""%~dp0serve.bat" %RT% %SVC% > "%OUT%\server.log" 2>&1"
 set TRIES=0
 :wait
 netstat -ano | findstr /R /C:":%PORT% .*LISTENING" >nul && goto ready
 set /a TRIES+=1
-if %TRIES% geq 60 (echo ERROR: server did not start, see the server.log & call :kill & exit /b)
+if %TRIES% geq 60 (echo ERROR: server did not start, see %OUT%\server.log & call :kill & exit /b)
 timeout /t 1 /nobreak >nul
 goto wait
 :ready
-call "%~dp0loadtest.bat" %RT% %SVC% %U% %RATE% %DUR%
+call "%~dp0loadtest.bat" %RT% %SVC% %U% %RATE% %DUR% "%OUT%"
 call :kill
 timeout /t 3 /nobreak >nul
 exit /b

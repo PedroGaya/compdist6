@@ -13,7 +13,7 @@ echo Unknown runtime %1 & exit /b 1
 if /i "%2"=="pbuf" (
   uv run --project python --directory python python pbuf/server.py
 ) else if /i "%2"=="soap" (
-  uv run --project python --directory python waitress-serve --port=%PORT% --threads=16 soap.main:app
+  uv run --project python --directory python waitress-serve --port=%PORT% --threads=16 --connection-limit=1000 --backlog=1024 soap.main:app 
 ) else (
   uv run --project python --directory python uvicorn %2.main:app --port %PORT% --no-access-log --log-level warning
 )

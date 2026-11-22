@@ -1,17 +1,12 @@
-@echo off
-setlocal
-cd /d "%~dp0.."
-if "%2"=="" (echo Usage: loadtest ^<py^|bun^> ^<rest^|soap^|graphql^|grpc^> [users] [rate] [time] & exit /b 1)
-call "%~dp0_env.bat" %1 %2
-
 set USERS=%3
 if "%USERS%"=="" set USERS=50
 set RATE=%4
 if "%RATE%"=="" set RATE=10
-set TIME=%5
-if "%TIME%"=="" set TIME=60s
+set DURATION=%5
+if "%DURATION%"=="" set DURATION=60s
 
+echo Running locust: users=%USERS% rate=%RATE% duration=%DURATION%
 uv run --project python locust -f loadtest/locustfile_%2.py ^
-  --host http://localhost:%PORT% --headless ^
-  -u %USERS% -r %RATE% -t %TIME% ^
+  --host http://localhost:%PORT% --headless --reset-stats --only-summary ^
+  -u %USERS% -r %RATE% -t %DURATION% ^
   --csv loadtest/results/%1_%2_u%USERS%

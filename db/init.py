@@ -9,6 +9,7 @@ for suffix in ("", "-wal", "-shm"):
 
 conn = sqlite3.connect(path)
 conn.executescript((root / "db" / "schema.sql").read_text())
+conn.execute("PRAGMA journal_mode=WAL")
 random.seed(42)  # same seed data every time
 conn.executemany("INSERT INTO users(name, age) VALUES (?, ?)",
                  [(f"user{i}", random.randint(15, 80)) for i in range(100)])
